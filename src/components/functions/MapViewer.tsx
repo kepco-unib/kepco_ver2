@@ -46,15 +46,15 @@ const MapViewer: React.FC<MapViewerProps> = ({ mode }) => {
       newControls.minDistance = 1;
       newControls.maxDistance = 500;
 
-        // ✅ 카메라 회전은 막되, 마우스로 이동 가능하게 설정
-        newControls.maxPolarAngle = Math.PI / 2; // 위쪽 이동 제한
-        newControls.enablePan = true; // ✅ 마우스 이동 가능하도록 설정
+      // ✅ 카메라 회전은 막되, 마우스로 이동 가능하게 설정
+      newControls.maxPolarAngle = Math.PI / 2; // 위쪽 이동 제한
+      newControls.enablePan = true; // ✅ 마우스 이동 가능하도록 설정
 
-        // ✅ 초기 카메라 위치
-        newCamera.position.set(0, 10, 10);
-        newCamera.lookAt(0, 0, 0);
+      // ✅ 초기 카메라 위치
+      newCamera.position.set(0, 10, 10);
+      newCamera.lookAt(0, 0, 0);
 
-        const light = new THREE.AmbientLight(0xffffff, 0.8);
+      const light = new THREE.AmbientLight(0xffffff, 0.8);
       newScene.add(light);
 
       const loader = new PCDLoader();
