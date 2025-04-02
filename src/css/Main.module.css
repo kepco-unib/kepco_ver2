@@ -1,0 +1,16 @@
+/* 🔥 메인 컨테이너 스타일 */
+.main {
+    height: 1000px;
+    background-color: #222222;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 🔥 그리드 스타일 */
+.gridContainer {
+    display: grid;
+    grid-template-columns: 1300px 450px;
+    grid-template-rows: 650px 310px;
+    column-gap: 50px;
+}

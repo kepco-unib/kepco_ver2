@@ -1,0 +1,296 @@
+/* 전체 화면 기본 스타일 제거 */
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Noto Sans", Arial, sans-serif;
+}
+
+.header {
+  background: white;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* 🔥 좌우 정렬 */
+  padding: 0 20px;
+}
+
+/* 🔥 왼쪽 로고 스타일 */
+.logo {
+  height: 60px;
+  width: auto;
+}
+
+/* 🔥 오른쪽 텍스트 스타일 */
+.headerText {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* 메인 컴포넌트 스타일 */
+.main {
+    height: 1000px;
+    background-color: #222222;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 그리드 컨테이너 스타일 */
+.gridContainer {
+    display: grid;
+    grid-template-columns: 1300px 450px;
+    grid-template-rows: 650px 310px;
+    column-gap: 50px;
+    row-gap: 0px;
+}
+
+/* 개별 박스 스타일 */
+.box {
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 제목 스타일 */
+.title {
+    height: 30px;
+    font-size: 18px;
+    color: white;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+/* 컨텐츠 스타일 */
+.content {
+    flex-grow: 1;
+    background-color: #151516;
+    border-radius: 8px;
+}
+
+/* 박스 크기 설정 */
+.box1 { width: 1300px; height: 650px; }
+.box2 { width: 450px; height: 650px; }
+.box3 { width: 1300px; height: 310px; }
+.box4 { width: 450px; height: 310px; }
+
+/* 🗺️ 지도 컨테이너 스타일 */
+.mapContainer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 🔥 지도 박스 (박스1 크기에 맞추기) */
+.mapBox {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/* 🔥 지도 이미지 (박스1에 꽉 차게) */
+.mapImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 박스 크기에 맞게 조절 */
+    user-drag: none;
+    transition: transform 0.2s ease-out;
+}
+
+/* 3D 지도 (Three.js) */
+.mapCanvas {
+    width: 100%;
+    height: 100%;
+}
+
+/* 지도 버튼 컨테이너 */
+.mapButtonContainer {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/* 버튼 컨테이너 (우측 상단 배치) */
+.buttonContainer {
+    z-index: 100;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+/* 버튼 스타일 */
+.button {
+    width: 60px;
+    height: 39px;
+    background-color: #555555;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* 활성화된 버튼 */
+.button.active {
+    background-color: #6F6CFF;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    color: white;
+  }
+  
+  .table th, .table td {
+    text-align: center;
+    height: 30px; /* 🔥 높이 30px 고정 */
+    border-bottom: 1px solid white;
+  }
+  
+  .table th {
+    font-weight: bold;
+    border-bottom: 1px solid white;
+  }
+  
+  /* 🔥 열 너비 고정 */
+  .table th:nth-child(1), .table td:nth-child(1) { width: 350px; } /* Map Name */
+  .table th:nth-child(2), .table td:nth-child(2) { width: 150px; } /* Name */
+  .table th:nth-child(3), .table td:nth-child(3) { width: 200px; } /* Num */
+  .table th:nth-child(4), .table td:nth-child(4) { width: 200px; } /* Type */
+  .table th:nth-child(5), .table td:nth-child(5) { width: 200px; } /* Date */
+  .table th:nth-child(6), .table td:nth-child(6) { width: 200px; } /* Map Size */
+  .table th:nth-child(7), .table td:nth-child(7) { width: 200px; } /* Note */
+  
+  .table tbody tr:hover {
+    cursor: pointer;
+  }
+  /* 🔥 전체 컨테이너 중앙 정렬 */
+.statusWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* 🔥 버튼 우측 정렬 및 간격 조정 */
+.modeButtonContainer {
+    display: flex;
+    justify-content: flex-end; /* 🔥 우측 정렬 */
+    gap: 25px; /* 🔥 버튼 사이 간격 */
+    padding-bottom: 14px; /* 🔥 그리드에서 위로 14px 간격 */
+  }
+  
+  
+  .modeButton {
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    color: white; /* 기본 색상 흰색 */
+    transition: color 0.3s ease;
+  }
+  .separator {
+    color: white; /* 🔥 "/" 기호도 흰색 */
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0 5px; /* SLAM / Navigation 간격 */
+  }
+  
+  .modeButton.active {
+    color: #6F6CFF; /* 활성화된 상태에서 보라색 */
+  }
+
+  
+  /* 🔥 2x2 상태값 그리드 */
+  .statusContainer {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    grid-template-rows: repeat(2, auto);
+    gap: 14px 10px; /* 🔥 위아래 14px, 좌우 10px */
+    width: fit-content;
+    height: fit-content;
+  }
+  
+  /* 🔥 개별 아이템 */
+  .statusItem {
+    width: 190px;
+    height: 42px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    gap: 10px;
+  }
+  
+  /* 🔥 라벨 스타일 */
+  .label {
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+  }
+  
+  /* 🔥 값이 들어가는 박스 */
+  .valueBox {
+    width: 50px;
+    height: 36px;
+    background: #333;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 5px;
+  }
+  
+  /* 🔥 단위 스타일 */
+  .unit {
+    font-size: 14px;
+    color: white;
+  }
+  .orientationContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: calc(100% - 50px); /* 🔥 좌우 25px 여백 */
+    padding-top: 14px;
+    gap: 12px; /* 🔥 요소들 간 간격 추가 */
+  }
+  
+  .orientationLabel {
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    width: 90px; /* 🔥 고정 너비 설정 */
+    text-align: left; /* 🔥 왼쪽 정렬 */
+  }
+  
+  .orientationBox {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 5px;
+    border-radius: 5px;
+    color: white;
+  }
+  
+  .orientationUnit {
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    width: 130px; /* 🔥 고정 너비 설정 */
+    text-align: right; /* 🔥 오른쪽 정렬 */
+  }

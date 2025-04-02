@@ -1,0 +1,14 @@
+/* 🔥 헤더 스타일 */
+.header {
+    background: white;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+}
+
+/* 🔥 로고 스타일 */
+.logo {
+    height: 60px;
+    width: auto;
+}

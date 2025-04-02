@@ -1,0 +1,32 @@
+.boxContainer {
+    display: flex;
+    flex-direction: column; /* 🔥 세로 정렬 */
+    align-items: center; /* 🔥 가로 중앙 정렬 */
+    justify-content: center; /* 🔥 세로 중앙 정렬 (필요하면 추가) */
+    gap: 0px; /* 🔥 박스 사이 간격 없음 */
+    width: 100%; /* 🔥 부모 요소 기준으로 너비 100% */
+    height: 100%; /* 🔥 부모 요소 기준으로 높이 100% (필요시 추가) */
+  }
+  
+  .box {
+    width: 400px;
+    height: 285px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .textArea {
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* 🔥 왼쪽 정렬 */
+    font-weight: bold;
+    color: white;
+  }
+  
+  .contentArea {
+    height: 250px;
+    background-color: rgba(255, 255, 255, 0.2); /* 🔥 컨텐츠 영역 색상 */
+    border-radius: 5px;
+  }

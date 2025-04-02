@@ -1,0 +1,16 @@
+/* 🔥 테이블 스타일 */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    color: white;
+}
+
+.table th, .table td {
+    text-align: center;
+    height: 30px;
+    border-bottom: 1px solid white;
+}
+
+/* 🔥 테이블 열 크기 */
+.table th:nth-child(1), .table td:nth-child(1) { width: 350px; }
+.table th:nth-child(2), .table td:nth-child(2) { width: 150px; }
