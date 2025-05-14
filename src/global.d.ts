@@ -9,3 +9,9 @@ declare module "*.png" {
 }
 
 declare module "three/examples/jsm/loaders/PCDLoader";
+
+declare module 'video.js' {
+  interface Player {
+    vr: (options: { projection: string, debug: boolean }) => void;
+  }
+}
