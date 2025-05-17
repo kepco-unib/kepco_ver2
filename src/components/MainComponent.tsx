@@ -18,8 +18,6 @@ const MainComponent: React.FC = () => {
         </BoxComponent>
         <BoxComponent title="SLAM Map Data Base" className={styles.box3}>
           <DataBase />
-        </BoxComponent>
-        <BoxComponent title="Robot Information" className={styles.box4}>
           <StatusBox />
         </BoxComponent>
       </div>

@@ -65,6 +65,7 @@ body {
 
 /* 컨텐츠 스타일 */
 .content {
+  display: flex;
     flex-grow: 1;
     background-color: #151516;
     border-radius: 8px;
@@ -72,9 +73,8 @@ body {
 
 /* 박스 크기 설정 */
 .box1 { width: 1300px; height: 650px; }
-.box2 { width: 450px; height: 650px; }
-.box3 { width: 1300px; height: 310px; }
-.box4 { width: 450px; height: 310px; }
+.box2 { width: 450px; height: 960px; }
+.box3 { width: 1300px; height: 310px; display: flex;}
 
 /* 🗺️ 지도 컨테이너 스타일 */
 .mapContainer {
@@ -146,7 +146,7 @@ body {
 }
 
 .table {
-    width: 100%;
+    width: 800px;
     border-collapse: collapse;
     color: white;
   }
@@ -180,7 +180,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 100%;
+    width: 500px;
     height: 100%;
   }
   

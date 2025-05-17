@@ -8,21 +8,27 @@ const Camera: React.FC = () => {
 
   useEffect(() => {
     if (containerRef.current) {
-      // Three.js 씬, 카메라, 렌더러 설정
       const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      const camera = new THREE.PerspectiveCamera(
+        75,
+        containerRef.current.offsetWidth / containerRef.current.offsetHeight,
+        0.1,
+        1000
+      );
+
       const renderer = new THREE.WebGLRenderer();
-      renderer.setSize(window.innerWidth, window.innerHeight);
+      const width = containerRef.current.offsetWidth;
+      const height = containerRef.current.offsetHeight;
+      renderer.setSize(width, height);
       containerRef.current.appendChild(renderer.domElement);
 
-      // 비디오 요소 생성
       const videoElement = document.createElement('video');
       videoElement.crossOrigin = 'anonymous';
       videoElement.loop = true;
       videoElement.muted = true;
       videoElement.playsInline = true;
+      videoElement.autoplay = true;
 
-      // HLS.js 사용하여 HLS 비디오 로드
       if (Hls.isSupported()) {
         const hls = new Hls();
         hls.loadSource('http://223.171.154.144:8080/hls/test.m3u8');
@@ -31,33 +37,28 @@ const Camera: React.FC = () => {
         videoElement.src = 'http://223.171.154.144:8080/hls/test.m3u8';
       }
 
-      // 비디오 텍스처로 사용
       const videoTexture = new THREE.VideoTexture(videoElement);
       videoTexture.minFilter = THREE.LinearFilter;
       videoTexture.magFilter = THREE.LinearFilter;
       videoTexture.format = THREE.RGBFormat;
 
-      // 스피어 지오메트리로 360도 비디오 맵핑
       const geometry = new THREE.SphereGeometry(500, 60, 40);
       const material = new THREE.MeshBasicMaterial({
         map: videoTexture,
-        side: THREE.DoubleSide,  // 양면 텍스처로 설정
+        side: THREE.DoubleSide,
       });
 
       const sphere = new THREE.Mesh(geometry, material);
       scene.add(sphere);
 
-      // 카메라 설정
       camera.position.set(0, 0, 0);
 
-      // 애니메이션 루프
       const animate = () => {
         requestAnimationFrame(animate);
         renderer.render(scene, camera);
       };
       animate();
 
-      // 화면 크기 변경 시 렌더러 크기 조정
       const handleResize = () => {
         if (containerRef.current) {
           const width = containerRef.current.offsetWidth;
@@ -69,11 +70,12 @@ const Camera: React.FC = () => {
       };
 
       window.addEventListener('resize', handleResize);
-      handleResize();  // 초기화 시 한번 실행
+      handleResize();
 
-      // 컴포넌트 언마운트 시 이벤트 리스너 제거
       return () => {
         window.removeEventListener('resize', handleResize);
+        containerRef.current?.removeChild(renderer.domElement);
+        renderer.dispose();
       };
     }
   }, []);
@@ -83,6 +85,10 @@ const Camera: React.FC = () => {
       <div className={styles.box}>
         <div className={styles.textArea}>Panorama 360 View</div>
         <div ref={containerRef} className={styles.contentArea}></div>
+      </div>
+      <div className={styles.box}>
+        <div className={styles.textArea}>RGB Cam View</div>
+        <div className={styles.contentArea}>컨텐츠 영역 1</div>
       </div>
       <div className={styles.box}>
         <div className={styles.textArea}>IR Cam View</div>

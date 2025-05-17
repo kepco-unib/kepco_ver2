@@ -3,12 +3,15 @@ import * as THREE from "three";
 import { PCDLoader } from "three/examples/jsm/loaders/PCDLoader";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import styles from "../../styles.module.css";
+import { useRecoilValue } from "recoil";
+import { statusAtom } from "../../recoil/statusAtom";
 
 interface MapViewerProps {
   mode: "2D" | "3D";
 }
 
 const MapViewer: React.FC<MapViewerProps> = ({ mode }) => {
+  const status = useRecoilValue(statusAtom);
   const containerRef = useRef<HTMLDivElement>(null);
   const mapBoxRef = useRef<HTMLDivElement>(null);
   const [scene, setScene] = useState<THREE.Scene | null>(null);
