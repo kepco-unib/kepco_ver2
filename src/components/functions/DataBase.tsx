@@ -1,27 +1,41 @@
 import React, { useEffect, useState } from "react";
 import styles from "../../styles.module.css";
 
-interface MapData {
-  mapname: string;
-  mapnum: string;
-  type: string;
-  date: string;
-  map_size: string;
-  note: string;
-}
+import { useSetRecoilState } from "recoil";
+import { selectedMapState, MapData } from "../../recoil/mapAtom";
 
 const DataBase: React.FC = () => {
   const [data, setData] = useState<MapData[]>([]);
+  const setSelectedMap = useSetRecoilState(selectedMapState);
+
+  // 페이징 상태들
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;  // 한 페이지에 보여줄 아이템 개수
 
   useEffect(() => {
-    fetch("/assets/sampleData.json")
+    fetch("http://localhost:8005/api/maps")
       .then((response) => response.json())
       .then((jsonData) => setData(jsonData))
       .catch((error) => console.error("데이터 로드 실패:", error));
   }, []);
 
   const handleRowClick = (item: MapData) => {
+    setSelectedMap(item); // Recoil 상태에 클릭한 데이터 저장
     console.log("클릭된 데이터:", item);
+  };
+
+  // 총 페이지 수 계산
+  const totalPages = Math.ceil(data.length / itemsPerPage);
+
+  // 현재 페이지에 맞는 데이터 슬라이스
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const pagedData = data.slice(startIndex, startIndex + itemsPerPage);
+
+  // 페이지 변경 함수
+  const goToPage = (page: number) => {
+    if (page < 1) page = 1;
+    else if (page > totalPages) page = totalPages;
+    setCurrentPage(page);
   };
 
   return (
@@ -38,17 +52,57 @@ const DataBase: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {data.map((item, index) => (
-            <tr key={index} onClick={() => handleRowClick(item)} className={styles.tableRow}>
-              <td>{item.mapname}</td>
-              <td>{item.mapnum}</td>
-              <td>{item.type}</td>
-              <td>{item.date}</td>
+          {pagedData.map((item, index) => (
+            <tr
+              key={startIndex + index}
+              onClick={() => handleRowClick(item)}
+              className={styles.tableRow}
+            >
+              <td>{item.map_name}</td>
+              <td>{item.map_num}</td>
+              <td>{item.map_type}</td>
+              <td>{item.map_date}</td>
               <td>{item.map_size}</td>
               <td>{item.note}</td>
             </tr>
           ))}
         </tbody>
+        <tfoot>
+          <tr>
+            <td colSpan={6} style={{ textAlign: "center", padding: "10px" }}>
+              <button
+                onClick={() => goToPage(currentPage - 1)}
+                disabled={currentPage === 1}
+                style={{ marginRight: 10 }}
+              >
+                이전
+              </button>
+              {[...Array(totalPages)].map((_, i) => {
+                const page = i + 1;
+                return (
+                  <button
+                    key={page}
+                    onClick={() => goToPage(page)}
+                    disabled={page === currentPage}
+                    style={{
+                      fontWeight: page === currentPage ? "bold" : "normal",
+                      margin: "0 5px",
+                    }}
+                  >
+                    {page}
+                  </button>
+                );
+              })}
+              <button
+                onClick={() => goToPage(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                style={{ marginLeft: 10 }}
+              >
+                다음
+              </button>
+            </td>
+          </tr>
+        </tfoot>
       </table>
     </div>
   );

@@ -1,44 +1,63 @@
 import React, { useState, useEffect } from "react";
 import styles from "../../styles.module.css";
 
+import { useRecoilValue } from "recoil";
+import { selectedMapState } from "../../recoil/mapAtom";
+
 interface MapViewerProps {
   mode: "2D" | "3D";
 }
 
 const MapViewer: React.FC<MapViewerProps> = ({ mode }) => {
-  const [mapImage, setMapImage] = useState<string | null>(null);
+  const [imageId, setImageId] = useState<string | null>(null);
+  const selectedMap = useRecoilValue(selectedMapState);
 
   useEffect(() => {
-    if (mode === "2D") {
-      // 예시 API 호출 - 실제 API 주소와 맞게 바꾸세요
-      fetch("/api/get-map-image")
+    if (selectedMap) {
+      const port = mode === "2D" ? 8001 : 8002;
+
+      fetch(`http://localhost:${port}/api/mapinfo`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          map_num: selectedMap.map_num,
+          map_type: selectedMap.map_type,
+        }),
+      })
         .then((res) => res.json())
         .then((data) => {
-          // data.imageUrl 이 이미지 경로나 base64 스트링이라 가정
-          setMapImage(data.imageUrl);
+          setImageId(data.image_id);
+          console.log(`[${mode}] image_id:`, data.image_id);
         })
         .catch((err) => {
-          console.error("Failed to load map image:", err);
+          console.error(`API 요청 실패(port ${port}):`, err);
+          setImageId(null);
         });
     }
-  }, [mode]);
+  }, [selectedMap, mode]);
 
   return (
     <div className={styles.mapContainer}>
       {mode === "2D" ? (
         <div className={styles.mapBox}>
-          {mapImage ? (
+          {imageId ? (
             <img
-              src={mapImage}
+              src={`http://localhost:8001/image/${imageId}`}
               alt="2D Map"
               style={{ width: "100%", height: "100%", objectFit: "contain" }}
             />
           ) : (
-            <p>Loading map...</p>
+            <p>Loading 2D map...</p>
           )}
         </div>
       ) : (
-        <div className={styles.mapCanvas}></div>
+        <div className={styles.mapCanvas}>
+          {imageId ? (
+            <p>3D image ID: {imageId}</p>
+          ) : (
+            <p>Loading 3D map...</p>
+          )}
+        </div>
       )}
     </div>
   );
