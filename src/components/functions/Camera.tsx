@@ -1,101 +1,77 @@
-import React, { useEffect, useRef } from 'react';
-import * as THREE from 'three';
-import Hls from 'hls.js';
+import React, { useState } from 'react';
 import styles from "../../css/camera.module.css";
-const REACT_APP_RTMP_API = process.env.REACT_APP_RTMP_API;
+import PanoramaPlayer from "./PanoramaPlayer";
 
 const Camera: React.FC = () => {
-  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [modalImage, setModalImage] = useState<string | null>(null);
+  const [isPanoramaModal, setIsPanoramaModal] = useState(false); // 파노라마 모달 여부
 
-  useEffect(() => {
-    if (containerRef.current) {
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(
-        75,
-        containerRef.current.offsetWidth / containerRef.current.offsetHeight,
-        0.1,
-        1000
-      );
+  const openModal = (imgSrc: string) => {
+    setModalImage(imgSrc);
+    setIsPanoramaModal(false);
+  };
 
-      const renderer = new THREE.WebGLRenderer();
-      const width = containerRef.current.offsetWidth;
-      const height = containerRef.current.offsetHeight;
-      renderer.setSize(width, height);
-      containerRef.current.appendChild(renderer.domElement);
+  const openPanoramaModal = () => {
+    setIsPanoramaModal(true);
+    setModalImage(null);
+  };
 
-      const videoElement = document.createElement('video');
-      videoElement.crossOrigin = 'anonymous';
-      videoElement.loop = true;
-      videoElement.muted = true;
-      videoElement.playsInline = true;
-      videoElement.autoplay = true;
+  const closeModal = () => {
+    setModalImage(null);
+    setIsPanoramaModal(false);
+  };
 
-      if (Hls.isSupported()) {
-        const hls = new Hls();
-        hls.loadSource(`${REACT_APP_RTMP_API}/hls/test.m3u8`);
-        hls.attachMedia(videoElement);
-      } else if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
-        videoElement.src = `${REACT_APP_RTMP_API}/hls/test.m3u8`;
-      }
-
-      const videoTexture = new THREE.VideoTexture(videoElement);
-      videoTexture.minFilter = THREE.LinearFilter;
-      videoTexture.magFilter = THREE.LinearFilter;
-      videoTexture.format = THREE.RGBFormat;
-
-      const geometry = new THREE.SphereGeometry(500, 60, 40);
-      const material = new THREE.MeshBasicMaterial({
-        map: videoTexture,
-        side: THREE.DoubleSide,
-      });
-
-      const sphere = new THREE.Mesh(geometry, material);
-      scene.add(sphere);
-
-      camera.position.set(0, 0, 0);
-
-      const animate = () => {
-        requestAnimationFrame(animate);
-        renderer.render(scene, camera);
-      };
-      animate();
-
-      const handleResize = () => {
-        if (containerRef.current) {
-          const width = containerRef.current.offsetWidth;
-          const height = containerRef.current.offsetHeight;
-          renderer.setSize(width, height);
-          camera.aspect = width / height;
-          camera.updateProjectionMatrix();
-        }
-      };
-
-      window.addEventListener('resize', handleResize);
-      handleResize();
-
-      return () => {
-        window.removeEventListener('resize', handleResize);
-        containerRef.current?.removeChild(renderer.domElement);
-        renderer.dispose();
-      };
-    }
-  }, []);
+  const panoramaStreamUrl = `${process.env.REACT_APP_RTMP_API}/hls/test.m3u8`;
 
   return (
-    <div className={styles.boxContainer}>
-      <div className={styles.box}>
-        <div className={styles.textArea}>Panorama 360 View</div>
-        <div ref={containerRef} className={styles.contentArea}></div>
+    <>
+      <div className={styles.boxContainer}>
+        <div className={styles.box}>
+          <div className={styles.textArea}>Panorama 360 View</div>
+          <div className={styles.contentArea}>
+            <PanoramaPlayer
+              streamUrl={panoramaStreamUrl}
+              onClick={openPanoramaModal}  // 클릭 시 파노라마 모달 열기
+            />
+          </div>
+        </div>
+        <div className={styles.box}>
+          <div className={styles.textArea}>RGB Cam View</div>
+          <div className={styles.contentArea} onClick={() => openModal("http://192.168.0.15:8007/video/realsense")}>
+            <img
+              src="http://192.168.0.15:8007/video/realsense"
+              alt="Realtime Stream"
+            />
+          </div>
+        </div>
+        <div className={styles.box}>
+          <div className={styles.textArea}>IR Cam View</div>
+          <div className={styles.contentArea} onClick={() => openModal("http://192.168.0.15:8007/video/flir")}>
+            <img
+              src="http://192.168.0.15:8007/video/flir"
+              alt="Realtime Stream"
+            />
+          </div>
+        </div>
       </div>
-      <div className={styles.box}>
-        <div className={styles.textArea}>RGB Cam View</div>
-        <div className={styles.contentArea}>컨텐츠 영역 1</div>
-      </div>
-      <div className={styles.box}>
-        <div className={styles.textArea}>IR Cam View</div>
-        <div className={styles.contentArea}>컨텐츠 영역 2</div>
-      </div>
-    </div>
+
+      {(modalImage || isPanoramaModal) && (
+        <div className={styles.modalOverlay} onClick={closeModal}>
+          <div style={{ width: "1000px", height: "600px" }} className={styles.modalContent} onClick={e => e.stopPropagation()}>
+            {isPanoramaModal ? (
+              // 파노라마 확대 모달: PanoramaPlayer 컴포넌트로 렌더링
+              <PanoramaPlayer 
+              streamUrl={panoramaStreamUrl} 
+              />
+            ) : (
+              // 일반 이미지 확대 모달
+              <img src={modalImage || ""} alt="확대 이미지" />
+            )}
+            <button className={styles.closeBtn} onClick={closeModal}>닫기</button>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
