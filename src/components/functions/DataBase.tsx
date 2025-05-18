@@ -13,7 +13,7 @@ const DataBase: React.FC = () => {
   const itemsPerPage = 5;  // 한 페이지에 보여줄 아이템 개수
 
   useEffect(() => {
-    fetch("http://localhost:8005/api/maps")
+    fetch("http://192.168.0.15:8005/api/maps")
       .then((response) => response.json())
       .then((jsonData) => setData(jsonData))
       .catch((error) => console.error("데이터 로드 실패:", error));
