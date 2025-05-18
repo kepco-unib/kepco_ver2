@@ -4,6 +4,7 @@ import MapViewer from "./MapViewer";
 import { useRecoilValue,useSetRecoilState } from "recoil";
 import { activeModeAtom } from "../../recoil/activeModeAtom"; 
 import { slamStatusAtom, navStatusAtom } from "../../recoil/statusAtom";
+const REACT_APP_SLAM_NAV_API = process.env.REACT_APP_SLAM_NAV_API;
 
 const MapButton: React.FC = () => {
   const activeMode = useRecoilValue(activeModeAtom);
@@ -13,7 +14,7 @@ const MapButton: React.FC = () => {
 
   const handle_slam = async (command: string) => {
     try {
-      const response = await fetch("http://localhost:8004/api/slam", {
+      const response = await fetch(`${REACT_APP_SLAM_NAV_API}/api/slam`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -36,7 +37,7 @@ const MapButton: React.FC = () => {
 
     const handle_nav = async (command: string) => {
     try {
-      const response = await fetch("http://localhost:8004/api/nav", {
+      const response = await fetch(`${REACT_APP_SLAM_NAV_API}/api/nav`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

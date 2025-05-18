@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { useRecoilValue } from "recoil";
 import { activeModeAtom } from "./recoil/activeModeAtom";
+const REACT_APP_STATUS_WS = process.env.REACT_APP_STATUS_WS;
 
 const RecoilObserver: React.FC = () => {
   const mode = useRecoilValue(activeModeAtom);
@@ -11,7 +12,7 @@ const RecoilObserver: React.FC = () => {
 
     // mode가 Control일 때 WebSocket 연결 및 키보드 이벤트 등록
     if (mode === "Control") {
-      wsRef.current = new WebSocket("ws://localhost:8003/ws/control");
+      wsRef.current = new WebSocket(`${REACT_APP_STATUS_WS}/ws/control`);
 
       wsRef.current.onopen = () => {
         console.log("✅ Control WebSocket 연결됨");

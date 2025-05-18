@@ -1,11 +1,12 @@
 import React from "react";
 import styles from "../styles.module.css";
 import logo from "../assets/logo.png";
+const REACT_APP_STATUS_API = process.env.REACT_APP_STATUS_API;
 
 const Header: React.FC = () => {
   const sendCommand = async (command: string) => {
     try {
-      const response = await fetch("http://localhost:8003/api/control", {
+      const response = await fetch(`${REACT_APP_STATUS_API}/api/control`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

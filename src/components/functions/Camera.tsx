@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import Hls from 'hls.js';
 import styles from "../../css/camera.module.css";
+const REACT_APP_RTMP_API = process.env.REACT_APP_RTMP_API;
 
 const Camera: React.FC = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -31,10 +32,10 @@ const Camera: React.FC = () => {
 
       if (Hls.isSupported()) {
         const hls = new Hls();
-        hls.loadSource('http://223.171.154.144:8080/hls/test.m3u8');
+        hls.loadSource(`${REACT_APP_RTMP_API}/hls/test.m3u8`);
         hls.attachMedia(videoElement);
       } else if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
-        videoElement.src = 'http://223.171.154.144:8080/hls/test.m3u8';
+        videoElement.src = `${REACT_APP_RTMP_API}/hls/test.m3u8`;
       }
 
       const videoTexture = new THREE.VideoTexture(videoElement);

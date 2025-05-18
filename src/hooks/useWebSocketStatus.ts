@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 import { statusAtom, StatusData } from "../recoil/statusAtom"
-
+const REACT_APP_STATUS_WS = process.env.REACT_APP_STATUS_WS;
 export function useWebSocketStatus() {
   const setStatus = useSetRecoilState(statusAtom);
 
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:8003/ws/status");
+    const ws = new WebSocket(`${REACT_APP_STATUS_WS}/ws/status`);
 
     ws.onopen = () => {
       console.log("✅ WebSocket 연결됨");
