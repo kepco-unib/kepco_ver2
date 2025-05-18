@@ -11,89 +11,51 @@ const MapButton: React.FC = () => {
   const setSlamStatus = useSetRecoilState(slamStatusAtom);
   const setNavStatus = useSetRecoilState(navStatusAtom);
 
-const handleStart_slam = async () => {
-  console.log("slam Start 클릭");
-  try {
-    const res = await fetch("http://localhost:8004/slam/start", {
-      method: "POST",
-    });
-    const result = await res.json();
-    console.log("SLAM 시작 응답:", result);
-    setSlamStatus("start");
-  } catch (err) {
-    console.error("SLAM 시작 실패:", err);
-  }
-};
+  const handle_slam = async (command: string) => {
+    try {
+      const response = await fetch("http://localhost:8004/api/slam", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ command }),
+      });
 
-const handleEnd_slam = async () => {
-  console.log("slam End 클릭");
-  try {
-    const res = await fetch("http://localhost:8004/slam/end", {
-      method: "POST",
-    });
-    const result = await res.json();
-    console.log("SLAM 종료 응답:", result);
-    setSlamStatus("end");
-  } catch (err) {
-    console.error("SLAM 종료 실패:", err);
-  }
-};
+      if (!response.ok) {
+        throw new Error("API 요청 실패");
+      }
 
-const handleStart_nav = async () => {
-  console.log("nav Start 클릭");
-  try {
-    const res = await fetch("http://localhost:8004/nav/start", {
-      method: "POST",
-    });
-    const result = await res.json();
-    console.log("nav 시작 응답:", result);
-    setNavStatus("start");
-  } catch (err) {
-    console.error("nav 시작 실패:", err);
-  }
-};
+      const data = await response.json();
+      console.log("응답 데이터:", data);
+      alert(`'${command}' 명령이 전송되었습니다.`);
+    } catch (error) {
+      console.error("에러 발생:", error);
+      alert("API 요청 중 오류가 발생했습니다.");
+    }
+  };
 
-const handleEnd_nav = async () => {
-  console.log("nav End 클릭");
-  try {
-    const res = await fetch("http://localhost:8004/nav/end", {
-      method: "POST",
-    });
-    const result = await res.json();
-    console.log("nav 종료 응답:", result);
-    setNavStatus("end");
-  } catch (err) {
-    console.error("nav 종료 실패:", err);
-  }
-};
+    const handle_nav = async (command: string) => {
+    try {
+      const response = await fetch("http://localhost:8004/api/nav", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ command }),
+      });
 
-const handlePause_slam = async () => {
-  console.log("slam Pause 클릭");
-  try {
-    const res = await fetch("http://localhost:8004/slam/pause", {
-      method: "POST",
-    });
-    const result = await res.json();
-    console.log("SLAM 일시정지 응답:", result);
-    setSlamStatus("pause");
-  } catch (err) {
-    console.error("SLAM 일시정지 실패:", err);
-  }
-};
+      if (!response.ok) {
+        throw new Error("API 요청 실패");
+      }
 
-const handlePause_nav = async () => {
-  console.log("nav Pause 클릭");
-  try {
-    const res = await fetch("http://localhost:8004/nav/pause", {
-      method: "POST",
-    });
-    const result = await res.json();
-    console.log("nav 일시정지 응답:", result);
-    setNavStatus("pause");
-  } catch (err) {
-    console.error("nav 일시정지 실패:", err);
-  }
-};
+      const data = await response.json();
+      console.log("응답 데이터:", data);
+      alert(`'${command}' 명령이 전송되었습니다.`);
+    } catch (error) {
+      console.error("에러 발생:", error);
+      alert("API 요청 중 오류가 발생했습니다.");
+    }
+  };
 
   return (
     <div className={styles.mapButtonContainer}>
@@ -101,16 +63,16 @@ const handlePause_nav = async () => {
       <div className={styles.buttonContainer}>
       {activeMode === "SLAM" && (
         <>
-          <button onClick={handleStart_slam} className={styles.button}>Start</button>
-          <button onClick={handlePause_slam} className={styles.button}>Pause</button>
-          <button onClick={handleEnd_slam} className={styles.button}>End</button>
+          <button onClick={() => handle_slam("start_slam")} className={styles.button}>Start</button>
+          <button onClick={() => handle_slam("pause_slam")} className={styles.button}>Pause</button>
+          <button onClick={() => handle_slam("end_slam")} className={styles.button}>End</button>
         </>
       )}
       {activeMode === "Navigation" && (
         <>
-          <button onClick={handleStart_nav} className={styles.button}>Start</button>
-          <button onClick={handlePause_nav} className={styles.button}>Pause</button>
-          <button onClick={handleEnd_nav} className={styles.button}>End</button>
+          <button onClick={() => handle_nav("start_nav")} className={styles.button}>Start</button>
+          <button onClick={() => handle_nav("pause_nav")} className={styles.button}>Pause</button>
+          <button onClick={() => handle_nav("end_nav")} className={styles.button}>End</button>
         </>
       )}
         <button

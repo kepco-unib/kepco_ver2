@@ -23,14 +23,14 @@ export const statusAtom = atom<StatusData>({
   },
 });
 
-export type StatusType = "start" | "pause" | "end";
+export type StatusType = "start" | "pause" | "end" | "ready";
 
 export const slamStatusAtom = atom<StatusType>({
   key: "slamStatusAtom",
-  default: "end", // 초기 상태는 'end'
+  default: "ready", // 초기 상태는 'end'
 });
 
 export const navStatusAtom = atom<StatusType>({
   key: "navStatusAtom",
-  default: "end",
+  default: "ready",
 });
