@@ -153,7 +153,18 @@ body {
 
 /* 버튼 스타일 */
 .button {
-    width: 60px;
+    width: 70px;
+    height: 39px;
+    background-color: #555555;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.button_point {
+    width: 80px;
     height: 39px;
     background-color: #555555;
     color: white;

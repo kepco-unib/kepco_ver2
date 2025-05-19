@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import styles from "../../styles.module.css";
-
 import { useRecoilValue } from "recoil";
 import { selectedMapState } from "../../recoil/mapAtom";
 
 interface MapViewerProps {
   mode: "2D" | "3D";
+  clickMode: "start" | "goal" | null;
 }
 
-const MapViewer: React.FC<MapViewerProps> = ({ mode }) => {
+const MapViewer: React.FC<MapViewerProps> = ({ mode, clickMode }) => {
   const [imageId, setImageId] = useState<string | null>(null);
   const selectedMap = useRecoilValue(selectedMapState);
 
@@ -36,6 +36,17 @@ const MapViewer: React.FC<MapViewerProps> = ({ mode }) => {
     }
   }, [selectedMap, mode]);
 
+  const handleClick = (e: React.MouseEvent<HTMLImageElement>) => {
+    if (!clickMode) return;
+
+    const rect = (e.target as HTMLImageElement).getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    console.log(`[${clickMode === "start" ? "시작" : "목표"} 위치] 좌표:`, { x, y });
+   alert(`${clickMode === "start" ? "시작" : "목표"} 위치 좌표: (${x}, ${y}) 가 지정되었습니다.`);
+  };
+
   return (
     <div className={styles.mapContainer}>
       {mode === "2D" ? (
@@ -44,7 +55,8 @@ const MapViewer: React.FC<MapViewerProps> = ({ mode }) => {
             <img
               src={`http://localhost:8001/image/${imageId}`}
               alt="2D Map"
-              style={{ width: "100%", height: "100%", objectFit: "contain" }}
+              style={{ width: "100%", height: "100%", objectFit: "contain", cursor: clickMode ? "crosshair" : "default" }}
+              onClick={handleClick}
             />
           ) : (
             <p>Loading 2D map...</p>
