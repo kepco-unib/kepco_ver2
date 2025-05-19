@@ -117,7 +117,9 @@ body {
     justify-content: center;
     align-items: center;
     position: relative;
+      cursor: grab;
 }
+
 
 /* 🔥 지도 이미지 (박스1에 꽉 차게) */
 .mapImage {
