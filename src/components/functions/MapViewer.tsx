@@ -44,7 +44,7 @@ const MapViewer: React.FC<MapViewerProps> = ({ mode, clickMode }) => {
     const y = e.clientY - rect.top;
 
     console.log(`[${clickMode === "start" ? "시작" : "목표"} 위치] 좌표:`, { x, y });
-   alert(`${clickMode === "start" ? "시작" : "목표"} 위치 좌표: (${x}, ${y}) 가 지정되었습니다.`);
+    alert(`${clickMode === "start" ? "시작" : "목표"} 위치 좌표: (${x}, ${y}) 가 지정되었습니다.`);
   };
 
   return (
